@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AsignaturasController;
 use App\Http\Controllers\CursosController;
 use App\Http\Controllers\CiclosController;
+use App\Http\Controllers\PersonalController;
 
 
 Route::get('/', function () {
@@ -30,3 +31,10 @@ Route::post('/ciclos', [CiclosController::class, 'store'])->name('ciclos.store')
 Route::get('/ciclos/{ciclo}/edit', [CiclosController::class, 'edit'])->name('ciclos.edit');
 Route::put('/ciclos/{ciclo}', [CiclosController::class, 'update'])->name('ciclos.update');
 Route::delete('/ciclos/{ciclo}', [CiclosController::class, 'destroy'])->name('ciclos.destroy');
+
+Route::get('/personal', [PersonalController::class, 'index'])->name('personal.index');
+Route::get('/personal/crear', [PersonalController::class, 'create'])->name('personal.create');
+Route::post('/personal', [PersonalController::class, 'store'])->name('personal.store');
+Route::get('/personal/{pers}/edit', [PersonalController::class, 'edit'])->name('personal.edit');
+Route::put('/personal/{pers}', [PersonalController::class, 'update'])->name('personal.update');
+Route::delete('/personal/{pers}', [PersonalController::class, 'destroy'])->name('personal.destroy');
