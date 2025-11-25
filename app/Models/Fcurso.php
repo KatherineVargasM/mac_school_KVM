@@ -12,4 +12,8 @@ class Fcurso extends Model
     protected $table = 'kvm_fcurso';
     protected $primaryKey = 'FCU_COD';
     public $timestamps = false;
+    protected $fillable = [
+        'FCU_DESCRI', 
+        'FCU_CIC'
+    ];
 }
