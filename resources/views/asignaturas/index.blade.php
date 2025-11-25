@@ -1,65 +1,64 @@
-@extends('layouts.dashboard_full') // Usa el layout de barra lateral
+@extends('layouts.dashboard_full')
 
-@section('content') 
+@section('content')
 
     <h4 class="fw-bold py-3 mb-4">
         <span class="text-muted fw-light">Gestión Escolar /</span> Asignaturas
     </h4>
 
     <div class="card">
-        <div class="card-header d-flex justify-content-between align-items-center">
-            <h5 class="card-title mb-0">Listado de Asignaturas</h5>
-        </div>
+        <h5 class="card-header">Lista de Asignaturas</h5>
         
         <div class="card-body">
             
-            <div class="mb-4 d-flex justify-content-between align-items-center">
-                <a href="{{ route('asignaturas.create') }}" class="btn btn-primary">Nuevo</a>
-                <button type="button" class="btn btn-secondary">Reporte</button> 
+            <div class="mb-4">
+                <a href="{{ route('asignaturas.create') }}" class="btn btn-primary">Nueva Asignatura</a>
             </div>
 
             @if (session('success'))
-                <div class="alert alert-success mt-2">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
                     {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             @endif
 
-            <div class="col-md-5 mb-3">
-                 <input type="text" class="form-control" id="txt_buscar" name="txt_buscar" placeholder="Buscar por nombre o código">
+            <div class="mb-3 col-md-5">
+                 <input type="text" class="form-control" id="txt_buscar" name="txt_buscar" placeholder="Buscar por nombre o código...">
             </div>
 
-            <div id="contenedor_tabla" class="table-responsive text-nowrap">
-                <table id="tabla" name="tabla" class="table table-bordered table-hover">
-                    <thead class='bg-primary text-white text-center' style="font-weight: bold;">
+            <div class="table-responsive text-nowrap">
+                <table class="table table-hover">
+                    <thead>
                         <tr>
                             <th>CÓDIGO</th>
-                            <th>ASIGNATURAS</th> <th>OBSERVACIÓN</th>
+                            <th>ASIGNATURA</th>
+                            <th>OBSERVACIÓN</th>
                             <th>ACCIONES</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        @foreach ($asignaturas as $asignatura)
-                        <tr>
-                            <td>{{ $asignatura->ASIG_CODIGO }}</td>
-                            <td>{{ $asignatura->ASIG_NOMBRE }}</td>
-                            <td>{{ $asignatura->ASIG_OBSERV }}</td>
-                            <td class="text-center">
-                                <a href="{{ route('asignaturas.edit', $asignatura->ASIG_CODIGO) }}" class="btn btn-warning btn-sm">Editar</a>
-                                
-                                <form action="{{ route('asignaturas.destroy', $asignatura->ASIG_CODIGO) }}" method="POST" style="display:inline;">
-                                    @csrf
-                                    @method('DELETE')
-                                    
-                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de que deseas eliminar la asignatura {{ $asignatura->ASIG_NOMBRE }}?');">
-                                        Eliminar
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
-                        @endforeach
+                    <tbody class="table-border-bottom-0" id="tabla_resultados">
+                        @include('asignaturas.tabla')
                     </tbody>
                 </table>
             </div>
+            
         </div>
     </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('#txt_buscar').on('keyup', function(){
+                var query = $(this).val();
+                $.ajax({
+                    url: "{{ route('asignaturas.index') }}",
+                    type: "GET",
+                    data: {'txt_buscar': query},
+                    success: function(data){
+                        $('#tabla_resultados').html(data);
+                    }
+                });
+            });
+        });
+    </script>
 @endsection

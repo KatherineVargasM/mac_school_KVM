@@ -8,11 +8,25 @@ use App\Models\Asig;
 class AsignaturasController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
-        $asignaturas = Asig::all(); 
+        $buscar = $request->get('txt_buscar');
+
+        if ($buscar) {
+            $asignaturas = Asig::where('ASIG_NOMBRE', 'like', '%' . $buscar . '%')
+                               ->orWhere('ASIG_CODIGO', 'like', '%' . $buscar . '%')
+                               ->get();
+        } else {
+            $asignaturas = Asig::all();
+        }
+
+        if ($request->ajax()) {
+            return view('asignaturas.tabla', compact('asignaturas'));
+        }
+
         return view('asignaturas.index', compact('asignaturas'));
     }
+
     public function create()
     {
         return view('asignaturas.create'); 
