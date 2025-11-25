@@ -6,9 +6,22 @@ use App\Models\Pers;
 
 class PersonalController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $personal = Pers::all(); 
+        $buscar = $request->get('txt_buscar');
+
+        if ($buscar) {
+            $personal = Pers::where('PER_APENOM', 'like', '%' . $buscar . '%')
+                            ->orWhere('PER_CEDULA', 'like', '%' . $buscar . '%')
+                            ->get();
+        } else {
+            $personal = Pers::all(); 
+        }
+
+        if ($request->ajax()) {
+            return view('personal.tabla', compact('personal'));
+        }
+
         return view('personal.index', compact('personal'));
     }
 

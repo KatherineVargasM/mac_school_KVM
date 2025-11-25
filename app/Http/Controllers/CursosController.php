@@ -5,14 +5,27 @@ use App\Models\Fcurso;
 use App\Models\Ciclo;
 class CursosController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $buscar = $request->get('txt_buscar');
 
-        $cursos = Fcurso::all(); 
+        if ($buscar) {
+            $cursos = Fcurso::where('FCU_DESCRI', 'like', '%' . $buscar . '%')
+                            ->orWhere('FCU_COD', 'like', '%' . $buscar . '%')
+                            ->get();
+        } else {
+            $cursos = Fcurso::all(); 
+        }
+
         $ciclos = Ciclo::all();
+
+        if ($request->ajax()) {
+            return view('cursos.tabla', compact('cursos'));
+        }
 
         return view('cursos.index', compact('cursos', 'ciclos'));
     }
+
     public function create()
     {
         $ciclos = Ciclo::all(); 

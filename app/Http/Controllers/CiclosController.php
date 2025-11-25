@@ -5,10 +5,22 @@ use App\Models\Ciclo;
 
 class CiclosController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $buscar = $request->get('txt_buscar');
 
-        $ciclos = Ciclo::all(); 
+        if ($buscar) {
+            $ciclos = Ciclo::where('CIC_NOMB', 'like', '%' . $buscar . '%')
+                           ->orWhere('CIC_CODI', 'like', '%' . $buscar . '%')
+                           ->get();
+        } else {
+            $ciclos = Ciclo::all(); 
+        }
+
+        if ($request->ajax()) {
+            return view('ciclos.tabla', compact('ciclos'));
+        }
+
         return view('ciclos.index', compact('ciclos'));
     }
 

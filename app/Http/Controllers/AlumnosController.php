@@ -6,9 +6,22 @@ use App\Models\Fcurso;
 
 class AlumnosController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $alumnos = Alumno::with('curso')->get(); 
+        $buscar = $request->get('txt_buscar');
+
+        if ($buscar) {
+            $alumnos = Alumno::with('curso')
+                        ->where('ALUM_NOMBRES', 'like', '%' . $buscar . '%')
+                        ->orWhere('ALUM_NMATRI', 'like', '%' . $buscar . '%')
+                        ->get();
+        } else {
+            $alumnos = Alumno::with('curso')->get(); 
+        }
+
+        if ($request->ajax()) {
+            return view('alumnos.tabla', compact('alumnos'));
+        }
 
         return view('alumnos.index', compact('alumnos'));
     }

@@ -1,59 +1,63 @@
-<!doctype html>
-<html lang="es">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Gestión de Personal - Laravel</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
-</head>
-<body>
-    <div class="container mt-4">
-        <div class="alert alert-light">
-            <h2 class="text-primary">Gestión de Personal</h2>
-            
-            <a href="{{ route('personal.create') }}" class="btn btn-success">Nuevo</a>
-            
-            <button type="button" class="btn btn-success">Reporte</button> 
-            <a href="{{ url('/admin') }}" class="btn btn-secondary">← Volver al Panel Principal</a>
-        </div>
+@extends('layouts.dashboard_full')
 
-        @if (session('success'))
-            <div class="alert alert-success mt-2">{{ session('success') }}</div>
-        @endif
+@section('content')
 
-        <div id="contenedor_tabla" class="table-responsive">
-            <table id="tabla" name="tabla" class="table table-bordered table-hover">
-                <thead class='bg-primary text-light text-center'>
-                    <tr>
-                        <th>CÓDIGO</th>
-                        <th>APELLIDOS Y NOMBRES</th>
-                        <th>CÉDULA</th>
-                        <th>ACCIONES</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($personal as $p)
-                    <tr>
-                        <td>{{ $p->PER_CODIGO }}</td>
-                        <td>{{ $p->PER_APENOM }}</td>
-                        <td>{{ $p->PER_CEDULA }}</td>
-                        <td class="text-center">
-                            <a href="{{ route('personal.edit', $p->PER_CODIGO) }}" class="btn btn-warning btn-sm">Editar</a>
-                            
-                            <form action="{{ route('personal.destroy', $p->PER_CODIGO) }}" method="POST" style="display:inline;">
-                                @csrf
-                                @method('DELETE') 
-                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Eliminar a {{ $p->PER_APENOM }}?');">
-                                    Eliminar
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
+    <h4 class="fw-bold py-3 mb-4">
+        <span class="text-muted fw-light">Gestión Escolar /</span> Personal
+    </h4>
+
+    <div class="card">
+        <h5 class="card-header">Gestión de Personal</h5>
+        
+        <div class="card-body">
+            
+            <div class="mb-4">
+                <a href="{{ route('personal.create') }}" class="btn btn-primary">Nuevo Personal</a>
+            </div>
+
+            @if (session('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+
+            <div class="mb-3 col-md-5">
+                 <input type="text" class="form-control" id="txt_buscar" name="txt_buscar" placeholder="Buscar por nombre o cédula...">
+            </div>
+
+            <div class="table-responsive text-nowrap">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>CÓDIGO</th>
+                            <th>APELLIDOS Y NOMBRES</th>
+                            <th>CÉDULA</th>
+                            <th>ACCIONES</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-border-bottom-0" id="tabla_resultados">
+                        @include('personal.tabla')
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-</body>
-</html>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('#txt_buscar').on('keyup', function(){
+                var query = $(this).val();
+                $.ajax({
+                    url: "{{ route('personal.index') }}",
+                    type: "GET",
+                    data: {'txt_buscar': query},
+                    success: function(data){
+                        $('#tabla_resultados').html(data);
+                    }
+                });
+            });
+        });
+    </script>
+@endsection
