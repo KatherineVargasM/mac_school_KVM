@@ -106,7 +106,6 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        {{-- CAMBIO: Ahora usamos btn-primary para que sea idéntico al botón de Nuevo --}}
                         <button type="submit" class="btn btn-primary">Actualizar</button>
                     </div>
                 </form>
@@ -114,8 +113,9 @@
         </div>
     </div>
 
-    {{-- SCRIPTS --}}
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
     <script>
         $(document).ready(function(){
             
@@ -142,6 +142,23 @@
                 var actionUrl = "{{ route('asignaturas.update', ':id') }}";
                 actionUrl = actionUrl.replace(':id', id);
                 $('#formEditarAsignatura').attr('action', actionUrl);
+            });
+
+            $(document).on('submit', '.form-eliminar', function(e){
+                e.preventDefault();
+                Swal.fire({
+                    title: '¿Deseas eliminarlo?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#008B8B',
+                    cancelButtonColor: '#359637',
+                    confirmButtonText: 'Eliminar',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        this.submit();
+                    }
+                })
             });
         });
     </script>

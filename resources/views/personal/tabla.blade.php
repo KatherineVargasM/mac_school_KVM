@@ -14,12 +14,11 @@
             Editar
         </button>
         
-        <form action="{{ route('personal.destroy', $p->PER_CODIGO) }}" method="POST" style="display:inline;">
+        <form action="{{ route('personal.destroy', $p->PER_CODIGO) }}" method="POST" class="form-eliminar" style="display:inline;">
             @csrf
             @method('DELETE') 
             <button type="submit" class="btn btn-sm text-white" 
-                    style="background-color: #008B8B; border-color: #008B8B;"
-                    onclick="return confirm('¿Eliminar a {{ $p->PER_APENOM }}?');">
+                    style="background-color: #008B8B; border-color: #008B8B;">
                 Eliminar
             </button>
         </form>

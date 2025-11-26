@@ -14,12 +14,11 @@
             Editar
         </button>
 
-        <form action="{{ route('cursos.destroy', $curso->FCU_COD) }}" method="POST" style="display:inline;">
+        <form action="{{ route('cursos.destroy', $curso->FCU_COD) }}" method="POST" class="form-eliminar" style="display:inline;">
             @csrf
             @method('DELETE')
             <button type="submit" class="btn btn-sm text-white" 
-                    style="background-color: #008B8B; border-color: #008B8B;"
-                    onclick="return confirm('¿Estás seguro de eliminar el curso {{ $curso->FCU_DESCRI }}?');">
+                    style="background-color: #008B8B; border-color: #008B8B;">
             Eliminar
             </button>
         </form>

@@ -112,6 +112,8 @@
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
         $(document).ready(function(){
             $('#txt_buscar').on('keyup', function(){
@@ -137,6 +139,23 @@
                 var actionUrl = "{{ route('ciclos.update', ':id') }}";
                 actionUrl = actionUrl.replace(':id', id);
                 $('#formEditarCiclo').attr('action', actionUrl);
+            });
+
+            $(document).on('submit', '.form-eliminar', function(e){
+                e.preventDefault();
+                Swal.fire({
+                    title: '¿Deseas eliminarlo?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#008B8B',
+                    cancelButtonColor: '#359637',
+                    confirmButtonText: 'Eliminar',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        this.submit();
+                    }
+                })
             });
         });
     </script>

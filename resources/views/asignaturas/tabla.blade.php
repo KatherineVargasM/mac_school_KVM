@@ -4,7 +4,6 @@
     <td>{{ $asignatura->ASIG_NOMBRE }}</td>
     <td>{{ $asignatura->ASIG_OBSERV }}</td>
     <td>
-
         <button type="button" class="btn btn-sm text-white btn-editar"
                 style="background-color: #359637; border-color: #359637;"
                 data-bs-toggle="modal" 
@@ -15,12 +14,11 @@
             Editar
         </button>
         
-        <form action="{{ route('asignaturas.destroy', $asignatura->ASIG_CODIGO) }}" method="POST" style="display:inline;">
+        <form action="{{ route('asignaturas.destroy', $asignatura->ASIG_CODIGO) }}" method="POST" class="form-eliminar" style="display:inline;">
             @csrf
             @method('DELETE')
             <button type="submit" class="btn btn-sm text-white" 
-                    style="background-color: #008B8B; border-color: #008B8B;"
-                    onclick="return confirm('¿Estás seguro de que deseas eliminar la asignatura {{ $asignatura->ASIG_NOMBRE }}?');">
+                    style="background-color: #008B8B; border-color: #008B8B;">
                 Eliminar
             </button>
         </form>

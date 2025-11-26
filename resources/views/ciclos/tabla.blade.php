@@ -14,12 +14,11 @@
             Editar
         </button>
 
-        <form action="{{ route('ciclos.destroy', $ciclo->CIC_CODI) }}" method="POST" style="display:inline;">
+        <form action="{{ route('ciclos.destroy', $ciclo->CIC_CODI) }}" method="POST" class="form-eliminar" style="display:inline;">
             @csrf
             @method('DELETE')
             <button type="submit" class="btn btn-sm text-white" 
-                    style="background-color: #008B8B; border-color: #008B8B;"
-                    onclick="return confirm('¿Estás seguro de eliminar el ciclo {{ $ciclo->CIC_NOMB }}?');">
+                    style="background-color: #008B8B; border-color: #008B8B;">
                 Eliminar
             </button>
         </form>

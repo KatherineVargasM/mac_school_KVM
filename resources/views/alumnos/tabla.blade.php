@@ -14,12 +14,11 @@
             Editar
         </button>
 
-        <form action="{{ route('alumnos.destroy', $alumno->ALUM_NMATRI) }}" method="POST" style="display:inline;">
+        <form action="{{ route('alumnos.destroy', $alumno->ALUM_NMATRI) }}" method="POST" class="form-eliminar" style="display:inline;">
             @csrf
             @method('DELETE')
             <button type="submit" class="btn btn-sm text-white" 
-                    style="background-color: #008B8B; border-color: #008B8B;"
-                    onclick="return confirm('¿Eliminar matrícula de {{ $alumno->ALUM_NOMBRES }}?');">
+                    style="background-color: #008B8B; border-color: #008B8B;">
             Eliminar
             </button>
         </form>
