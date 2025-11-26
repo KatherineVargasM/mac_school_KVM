@@ -4,11 +4,16 @@
     <td>{{ $asignatura->ASIG_NOMBRE }}</td>
     <td>{{ $asignatura->ASIG_OBSERV }}</td>
     <td>
-        <a href="{{ route('asignaturas.edit', $asignatura->ASIG_CODIGO) }}" 
-           class="btn btn-sm text-white"
-           style="background-color: #359637; border-color: #359637;">
+
+        <button type="button" class="btn btn-sm text-white btn-editar"
+                style="background-color: #359637; border-color: #359637;"
+                data-bs-toggle="modal" 
+                data-bs-target="#modalEditarAsignatura"
+                data-id="{{ $asignatura->ASIG_CODIGO }}"
+                data-nombre="{{ $asignatura->ASIG_NOMBRE }}"
+                data-observacion="{{ $asignatura->ASIG_OBSERV }}">
             Editar
-        </a>
+        </button>
         
         <form action="{{ route('asignaturas.destroy', $asignatura->ASIG_CODIGO) }}" method="POST" style="display:inline;">
             @csrf

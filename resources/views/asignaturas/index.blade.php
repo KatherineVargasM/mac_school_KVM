@@ -12,7 +12,9 @@
         <div class="card-body">
             
             <div class="mb-4">
-                <a href="{{ route('asignaturas.create') }}" class="btn btn-primary">Nueva Asignatura</a>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalNuevaAsignatura">
+                    Nueva Asignatura
+                </button>
             </div>
 
             @if (session('success'))
@@ -41,13 +43,82 @@
                     </tbody>
                 </table>
             </div>
-            
         </div>
     </div>
 
+    <div class="modal fade" id="modalNuevaAsignatura" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Registrar Nueva Asignatura</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="{{ route('asignaturas.store') }}" method="POST">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col mb-3">
+                                <label for="txt_nombre" class="form-label">Nombre</label>
+                                <input type="text" id="txt_nombre" name="txt_nombre" class="form-control" placeholder="Ej: Matemáticas" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col mb-0">
+                                <label for="txt_observacion" class="form-label">Observación</label>
+                                <input type="text" id="txt_observacion" name="txt_observacion" class="form-control" placeholder="Opcional...">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalEditarAsignatura" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Editar Asignatura</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                
+                <form id="formEditarAsignatura" method="POST">
+                    @csrf
+                    @method('PUT') 
+                    
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col mb-3">
+                                <label for="edit_txt_nombre" class="form-label">Nombre</label>
+                                <input type="text" id="edit_txt_nombre" name="txt_nombre" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col mb-0">
+                                <label for="edit_txt_observacion" class="form-label">Observación</label>
+                                <input type="text" id="edit_txt_observacion" name="txt_observacion" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        {{-- CAMBIO: Ahora usamos btn-primary para que sea idéntico al botón de Nuevo --}}
+                        <button type="submit" class="btn btn-primary">Actualizar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    {{-- SCRIPTS --}}
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function(){
+            
             $('#txt_buscar').on('keyup', function(){
                 var query = $(this).val();
                 $.ajax({
@@ -58,6 +129,19 @@
                         $('#tabla_resultados').html(data);
                     }
                 });
+            });
+
+            $(document).on('click', '.btn-editar', function() {
+                var id = $(this).data('id');
+                var nombre = $(this).data('nombre');
+                var observacion = $(this).data('observacion');
+
+                $('#edit_txt_nombre').val(nombre);
+                $('#edit_txt_observacion').val(observacion);
+
+                var actionUrl = "{{ route('asignaturas.update', ':id') }}";
+                actionUrl = actionUrl.replace(':id', id);
+                $('#formEditarAsignatura').attr('action', actionUrl);
             });
         });
     </script>

@@ -12,7 +12,9 @@
         <div class="card-body">
             
             <div class="mb-4">
-                <a href="{{ route('personal.create') }}" class="btn btn-primary">Nuevo Personal</a>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalNuevoPersonal">
+                    Nuevo Personal
+                </button>
             </div>
 
             @if (session('success'))
@@ -44,6 +46,71 @@
         </div>
     </div>
 
+    <div class="modal fade" id="modalNuevoPersonal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Registrar Personal</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="{{ route('personal.store') }}" method="POST">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col mb-3">
+                                <label for="txt_nombre" class="form-label">Apellidos y Nombres</label>
+                                <input type="text" id="txt_nombre" name="txt_nombre" class="form-control" placeholder="Ingrese nombre completo..." required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col mb-0">
+                                <label for="txt_cedula" class="form-label">Cédula</label>
+                                <input type="text" id="txt_cedula" name="txt_cedula" class="form-control" placeholder="Ingrese cédula..." required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalEditarPersonal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Editar Personal</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="formEditarPersonal" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col mb-3">
+                                <label for="edit_txt_nombre" class="form-label">Apellidos y Nombres</label>
+                                <input type="text" id="edit_txt_nombre" name="txt_nombre" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col mb-0">
+                                <label for="edit_txt_cedula" class="form-label">Cédula</label>
+                                <input type="text" id="edit_txt_cedula" name="txt_cedula" class="form-control" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Actualizar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function(){
@@ -57,6 +124,19 @@
                         $('#tabla_resultados').html(data);
                     }
                 });
+            });
+
+            $(document).on('click', '.btn-editar', function() {
+                var id = $(this).data('id');
+                var nombre = $(this).data('nombre');
+                var cedula = $(this).data('cedula');
+
+                $('#edit_txt_nombre').val(nombre);
+                $('#edit_txt_cedula').val(cedula);
+
+                var actionUrl = "{{ route('personal.update', ':id') }}";
+                actionUrl = actionUrl.replace(':id', id);
+                $('#formEditarPersonal').attr('action', actionUrl);
             });
         });
     </script>

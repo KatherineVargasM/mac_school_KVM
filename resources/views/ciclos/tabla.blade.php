@@ -3,12 +3,16 @@
     <td><strong>{{ $ciclo->CIC_CODI }}</strong></td>
     <td>{{ $ciclo->CIC_NOMB }}</td>
     <td>{{ $ciclo->CIC_OBSERV }}</td>
-    <td >
-        <a href="{{ route('ciclos.edit', $ciclo->CIC_CODI) }}" 
-           class="btn btn-sm text-white"
-           style="background-color: #359637; border-color: #359637;">
+    <td>
+        <button type="button" class="btn btn-sm text-white btn-editar"
+                style="background-color: #359637; border-color: #359637;"
+                data-bs-toggle="modal" 
+                data-bs-target="#modalEditarCiclo"
+                data-id="{{ $ciclo->CIC_CODI }}"
+                data-nombre="{{ $ciclo->CIC_NOMB }}"
+                data-observacion="{{ $ciclo->CIC_OBSERV }}">
             Editar
-        </a>
+        </button>
 
         <form action="{{ route('ciclos.destroy', $ciclo->CIC_CODI) }}" method="POST" style="display:inline;">
             @csrf

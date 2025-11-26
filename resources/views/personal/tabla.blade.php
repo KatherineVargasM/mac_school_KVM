@@ -4,11 +4,15 @@
     <td>{{ $p->PER_APENOM }}</td>
     <td>{{ $p->PER_CEDULA }}</td>
     <td>
-        <a href="{{ route('personal.edit', $p->PER_CODIGO) }}" 
-           class="btn btn-sm text-white"
-           style="background-color: #359637; border-color: #359637;">
+        <button type="button" class="btn btn-sm text-white btn-editar"
+                style="background-color: #359637; border-color: #359637;"
+                data-bs-toggle="modal" 
+                data-bs-target="#modalEditarPersonal"
+                data-id="{{ $p->PER_CODIGO }}"
+                data-nombre="{{ $p->PER_APENOM }}"
+                data-cedula="{{ $p->PER_CEDULA }}">
             Editar
-        </a>
+        </button>
         
         <form action="{{ route('personal.destroy', $p->PER_CODIGO) }}" method="POST" style="display:inline;">
             @csrf

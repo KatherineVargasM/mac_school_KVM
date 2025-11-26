@@ -4,11 +4,15 @@
     <td>{{ $curso->FCU_DESCRI }}</td>
     <td>{{ $curso->FCU_CIC }}</td> 
     <td>
-        <a href="{{ route('cursos.edit', $curso->FCU_COD) }}" 
-           class="btn btn-sm text-white"
-           style="background-color: #359637; border-color: #359637;">
+        <button type="button" class="btn btn-sm text-white btn-editar"
+                style="background-color: #359637; border-color: #359637;"
+                data-bs-toggle="modal" 
+                data-bs-target="#modalEditarCurso"
+                data-id="{{ $curso->FCU_COD }}"
+                data-descripcion="{{ $curso->FCU_DESCRI }}"
+                data-ciclo="{{ $curso->FCU_CIC }}">
             Editar
-        </a>
+        </button>
 
         <form action="{{ route('cursos.destroy', $curso->FCU_COD) }}" method="POST" style="display:inline;">
             @csrf

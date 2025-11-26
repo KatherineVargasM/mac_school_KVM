@@ -8,6 +8,7 @@ class AlumnosController extends Controller
 {
     public function index(Request $request)
     {
+
         $buscar = $request->get('txt_buscar');
 
         if ($buscar) {
@@ -19,11 +20,12 @@ class AlumnosController extends Controller
             $alumnos = Alumno::with('curso')->get(); 
         }
 
+        $cursos = Fcurso::all();
+
         if ($request->ajax()) {
             return view('alumnos.tabla', compact('alumnos'));
         }
-
-        return view('alumnos.index', compact('alumnos'));
+        return view('alumnos.index', compact('alumnos', 'cursos'));
     }
 
     public function create()

@@ -3,13 +3,16 @@
     <td><strong>{{ $alumno->ALUM_NMATRI }}</strong></td>
     <td>{{ $alumno->ALUM_NOMBRES }}</td>
     <td>{{ $alumno->curso->FCU_DESCRI }}</td> 
-
     <td>
-        <a href="{{ route('alumnos.edit', $alumno->ALUM_NMATRI) }}" 
-           class="btn btn-sm text-white"
-           style="background-color: #359637; border-color: #359637;">
+        <button type="button" class="btn btn-sm text-white btn-editar"
+                style="background-color: #359637; border-color: #359637;"
+                data-bs-toggle="modal" 
+                data-bs-target="#modalEditarAlumno"
+                data-id="{{ $alumno->ALUM_NMATRI }}"
+                data-nombre="{{ $alumno->ALUM_NOMBRES }}"
+                data-curso="{{ $alumno->ALUM_CODCUR }}">
             Editar
-        </a>
+        </button>
 
         <form action="{{ route('alumnos.destroy', $alumno->ALUM_NMATRI) }}" method="POST" style="display:inline;">
             @csrf
